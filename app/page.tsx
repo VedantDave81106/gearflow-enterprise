@@ -6,6 +6,7 @@ import { OrderForm } from "@/components/order-form";
 import { WebVitalsHud } from "@/components/web-vitals-hud";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
+import { ScreenThemeButton } from "@/components/theme-toggle";
 import {
   Server,
   Layers,
@@ -99,6 +100,7 @@ export default async function HomePage() {
                   <span>Open Requisition Form</span>
                 </Button>
               </a>
+              <ScreenThemeButton />
               <a href="#hydration-section">
                 <Button size="sm" variant="ghost" className="h-8 text-xs font-medium gap-1.5 text-muted-foreground">
                   <Activity className="h-3.5 w-3.5" />
