@@ -86,7 +86,7 @@ export function OrderForm() {
         name: "Wireless Noise-Cancelling Headphones",
         description: "High-fidelity audio with active noise cancellation",
         category: "audio",
-        price: 99.0,
+        price: 2499,
         stock: 15,
         rating: 4.8,
         imageUrl: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800&auto=format&fit=crop&q=80",
@@ -106,7 +106,7 @@ export function OrderForm() {
           productId: "prod-headphones",
           productName: "Wireless Noise-Cancelling Headphones",
           quantity: 1,
-          unitPrice: 99.0,
+          unitPrice: 2499,
         },
       ],
     });

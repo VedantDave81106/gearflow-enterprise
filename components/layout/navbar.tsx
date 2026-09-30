@@ -5,20 +5,16 @@ import Link from "next/link";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
 import { useCartStore, cartActions } from "@/lib/store/cart-store";
-import { AcademicRubricModal } from "@/components/academic-rubric-modal";
 import {
   ShoppingBag,
   ShoppingCart,
   FileText,
-  GraduationCap,
   Layers,
   Activity,
   Terminal,
 } from "lucide-react";
 
 export function Navbar() {
-  const [rubricOpen, setRubricOpen] = React.useState(false);
-
   // Selective Zustand subscription: subscribes ONLY to total items count.
   // Isolated from layout re-renders.
   const totalItemCount = useCartStore(
@@ -36,7 +32,7 @@ export function Navbar() {
         Skip to main content
       </a>
 
-      {/* Top Academic Status Bar */}
+      {/* Top Status Bar */}
       <div className="border-b bg-muted/40 text-[11px] text-muted-foreground py-1 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-2 sm:gap-3">
@@ -49,14 +45,6 @@ export function Navbar() {
           </div>
 
           <div className="flex items-center gap-3">
-            <button
-              onClick={() => setRubricOpen(true)}
-              className="hover:text-primary transition-colors flex items-center gap-1 font-medium"
-            >
-              <GraduationCap className="h-3.5 w-3.5 text-primary" />
-              <span>Course Outcomes (CO1/CO2)</span>
-            </button>
-            <span className="text-border">|</span>
             <Link
               href="/report"
               className="hover:text-primary transition-colors flex items-center gap-1 font-medium"
@@ -89,7 +77,7 @@ export function Navbar() {
             </Link>
 
             <span className="hidden lg:inline text-xs text-muted-foreground font-mono bg-muted/60 px-2 py-0.5 rounded border">
-              Web Dev Assignment
+              Electronics Store
             </span>
           </div>
 
@@ -151,9 +139,6 @@ export function Navbar() {
           </div>
         </div>
       </header>
-
-      {/* Academic Rubric Modal */}
-      <AcademicRubricModal open={rubricOpen} onOpenChange={setRubricOpen} />
     </>
   );
 }

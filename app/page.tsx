@@ -73,7 +73,7 @@ export default async function HomePage() {
             <div className="flex items-center gap-2">
               <span className="flex h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
               <span className="text-xs font-mono uppercase tracking-wider text-muted-foreground font-semibold">
-                Web Development Engineering Assignment • Next.js 15
+                Next.js 15 App Router • Architecture Demo
               </span>
             </div>
 
