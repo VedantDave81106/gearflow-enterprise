@@ -6,6 +6,7 @@ export interface FilterState {
   maxPrice: number;
   inStockOnly: boolean;
   sortBy: "featured" | "price-asc" | "price-desc" | "rating";
+  viewMode: "grid" | "table";
 
   // Actions
   setSearchQuery: (query: string) => void;
@@ -13,6 +14,7 @@ export interface FilterState {
   setMaxPrice: (price: number) => void;
   setInStockOnly: (inStock: boolean) => void;
   setSortBy: (sort: "featured" | "price-asc" | "price-desc" | "rating") => void;
+  setViewMode: (mode: "grid" | "table") => void;
   resetFilters: () => void;
 }
 
@@ -22,6 +24,7 @@ const DEFAULT_FILTERS = {
   maxPrice: 10000,
   inStockOnly: false,
   sortBy: "featured" as const,
+  viewMode: "grid" as const,
 };
 
 export const useFilterStore = create<FilterState>((set) => ({
@@ -32,5 +35,6 @@ export const useFilterStore = create<FilterState>((set) => ({
   setMaxPrice: (maxPrice) => set({ maxPrice }),
   setInStockOnly: (inStockOnly) => set({ inStockOnly }),
   setSortBy: (sortBy) => set({ sortBy }),
+  setViewMode: (viewMode) => set({ viewMode }),
   resetFilters: () => set(DEFAULT_FILTERS),
 }));

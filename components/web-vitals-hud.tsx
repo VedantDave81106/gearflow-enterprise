@@ -132,15 +132,15 @@ export function WebVitalsHud() {
           <div className="space-y-1">
             <div className="flex items-center gap-2">
               <Gauge className="h-5 w-5 text-primary" />
-              <CardTitle className="text-xl tracking-tight">
-                Real-Time Core Web Vitals & Hydration Auditing
+              <CardTitle className="text-lg font-bold tracking-tight">
+                Datacenter APM & Core Web Vitals Telemetry
               </CardTitle>
-              <Badge variant="outline" className="border-blue-500/40 text-blue-500 font-mono text-[11px]">
-                Topic 6 Telemetry
+              <Badge variant="outline" className="border-emerald-500/40 text-emerald-500 font-mono text-[11px]">
+                Live Runtime Telemetry
               </Badge>
             </div>
-            <CardDescription className="text-xs sm:text-sm">
-              Live measurement of LCP, CLS, and INP via Next.js useReportWebVitals runtime telemetry.
+            <CardDescription className="text-xs">
+              Continuous measurement of LCP, CLS, and INP via Next.js useReportWebVitals API.
             </CardDescription>
           </div>
 

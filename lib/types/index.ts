@@ -9,6 +9,10 @@ export interface Product {
   features: string[];
   imageUrl: string;
   badge?: string;
+  sku?: string;
+  formFactor?: string;
+  datacenter?: string;
+  leadTime?: string;
 }
 
 export interface CartItem {
