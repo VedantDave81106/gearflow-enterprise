@@ -6,7 +6,7 @@ import { Product, CartItem } from "@/lib/types";
 export interface CartState {
   items: CartItem[];
   discountCode: string | null;
-  discountRate: number; // e.g., 0.15 for 15%
+  discountRate: number; // e.g. 0.1 for 10%
   isDrawerOpen: boolean;
 
   // Actions
@@ -14,8 +14,7 @@ export interface CartState {
   removeItem: (productId: string) => void;
   updateQuantity: (productId: string, quantity: number) => void;
   clearCart: () => void;
-  applyDiscount: (code: string) => { valid: boolean; rate: number; message: string };
-  removeDiscount: () => void;
+  applyDiscount: (code: string) => { valid: boolean; message: string };
   setIsDrawerOpen: (open: boolean) => void;
   toggleDrawer: () => void;
 }
@@ -30,14 +29,14 @@ export const useCartStoreBase = create<CartState>()(
 
       addItem: (product: Product, quantity = 1) => {
         set((state) => {
-          const existingIndex = state.items.findIndex(
+          const index = state.items.findIndex(
             (i) => i.product.id === product.id
           );
-          if (existingIndex > -1) {
+          if (index > -1) {
             const updated = [...state.items];
-            updated[existingIndex] = {
-              ...updated[existingIndex],
-              quantity: updated[existingIndex].quantity + quantity,
+            updated[index] = {
+              ...updated[index],
+              quantity: updated[index].quantity + quantity,
             };
             return { items: updated };
           }
@@ -71,20 +70,11 @@ export const useCartStoreBase = create<CartState>()(
       },
 
       applyDiscount: (code: string) => {
-        const normalized = code.trim().toUpperCase();
-        if (normalized === "ENTERPRISE20") {
-          set({ discountCode: "ENTERPRISE20", discountRate: 0.2 });
-          return { valid: true, rate: 0.2, message: "Applied 20% Enterprise Discount!" };
+        if (code.trim().toUpperCase() === "STUDENT10") {
+          set({ discountCode: "STUDENT10", discountRate: 0.1 });
+          return { valid: true, message: "Applied 10% Student Discount!" };
         }
-        if (normalized === "NEXT15") {
-          set({ discountCode: "NEXT15", discountRate: 0.15 });
-          return { valid: true, rate: 0.15, message: "Applied 15% Next.js Student Discount!" };
-        }
-        return { valid: false, rate: 0, message: "Invalid discount code. Try 'NEXT15' or 'ENTERPRISE20'" };
-      },
-
-      removeDiscount: () => {
-        set({ discountCode: null, discountRate: 0 });
+        return { valid: false, message: "Invalid promo code. Try 'STUDENT10'" };
       },
 
       setIsDrawerOpen: (open: boolean) => {
@@ -96,18 +86,16 @@ export const useCartStoreBase = create<CartState>()(
       },
     }),
     {
-      name: "gearflow-cart-storage",
+      name: "next-gadgets-cart",
       storage: createJSONStorage(() => localStorage),
-      // Skip automatic rehydration on server to prevent SSR hydration mismatch
       skipHydration: true,
     }
   )
 );
 
 /**
- * Hydration-safe selector hook for Zustand with SSR
- * Guarantees that during server render and initial client hydration,
- * initial fallback state is returned, preventing React error #418 / #423.
+ * Hydration-safe hook for Zustand with Next.js SSR.
+ * Prevents hydration errors by returning fallback state on the server.
  */
 export function useCartStore<T>(
   selector: (state: CartState) => T,
@@ -115,17 +103,15 @@ export function useCartStore<T>(
 ): T {
   const storeValue = useCartStoreBase(selector);
 
-  // Sync external store to detect if client has rehydrated
   const isHydrated = useSyncExternalStore(
     (callback) => {
-      const unsubHydrate = useCartStoreBase.persist.onFinishHydration(callback);
-      return () => unsubHydrate();
+      const unsub = useCartStoreBase.persist.onFinishHydration(callback);
+      return () => unsub();
     },
     () => useCartStoreBase.persist.hasHydrated(),
     () => false
   );
 
-  // If not yet hydrated and fallback is given, return fallback
   if (!isHydrated && fallback !== undefined) {
     return fallback;
   }
@@ -133,7 +119,6 @@ export function useCartStore<T>(
   return storeValue;
 }
 
-// Re-export base store for direct actions where selector is not needed
 export const cartActions = {
   addItem: (product: Product, quantity?: number) =>
     useCartStoreBase.getState().addItem(product, quantity),
@@ -144,7 +129,6 @@ export const cartActions = {
   clearCart: () => useCartStoreBase.getState().clearCart(),
   applyDiscount: (code: string) =>
     useCartStoreBase.getState().applyDiscount(code),
-  removeDiscount: () => useCartStoreBase.getState().removeDiscount(),
   setIsDrawerOpen: (open: boolean) =>
     useCartStoreBase.getState().setIsDrawerOpen(open),
   toggleDrawer: () => useCartStoreBase.getState().toggleDrawer(),

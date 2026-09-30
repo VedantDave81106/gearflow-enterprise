@@ -16,9 +16,9 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"),
-  title: "GearFlow Enterprise | Responsive Accessible Architecture & Server Mutations",
+  title: "NextGadgets | Responsive Architecture & Server Action Form Mutations",
   description:
-    "Production-grade Next.js App Router application demonstrating RSC hydration boundaries, decoupled Zustand client state, and end-to-end type-safe form mutations using Server Actions and Zod.",
+    "Accessible Next.js 15 App Router application with React Server Components, Zustand persistent client store, and type-safe Server Actions with Zod validation.",
   keywords: [
     "Next.js App Router",
     "React Server Components",
@@ -29,17 +29,17 @@ export const metadata: Metadata = {
     "Radix UI",
     "Core Web Vitals",
   ],
-  authors: [{ name: "Advanced Web Development Engineering Team" }],
+  authors: [{ name: "Student Web Development Team" }],
   openGraph: {
-    title: "GearFlow Enterprise | Responsive Accessible Architecture",
+    title: "NextGadgets | Responsive Accessible Component Architecture",
     description:
       "Next.js App Router, Radix Primitives, Zustand Persistent Store, and Type-Safe Server Actions.",
     type: "website",
-    siteName: "GearFlow Enterprise",
+    siteName: "NextGadgets",
   },
   twitter: {
     card: "summary_large_image",
-    title: "GearFlow Enterprise | Next.js App Router Architecture",
+    title: "NextGadgets | Next.js App Router Architecture",
     description: "Type-safe form mutations, persistent Zustand client store, and zero CLS hydration.",
   },
 };

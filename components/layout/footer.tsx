@@ -8,13 +8,13 @@ export function Footer() {
         <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-muted-foreground">
           <div className="flex items-center gap-2">
             <div className="h-6 w-6 rounded-md bg-primary flex items-center justify-center text-primary-foreground font-bold text-xs">
-              GF
+              NG
             </div>
             <span className="font-semibold text-foreground">
-              GearFlow Enterprise Architecture
+              NextGadgets Store
             </span>
             <span>•</span>
-            <span>Course Outcomes CO1 & CO2</span>
+            <span>Course Outcomes CO1 &amp; CO2</span>
           </div>
 
           <div className="flex items-center gap-4">

@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 
 export const runtime = "edge";
-export const alt = "GearFlow Enterprise - Responsive Accessible Component Architecture";
+export const alt = "NextGadgets - Responsive Accessible Component Architecture";
 export const size = {
   width: 1200,
   height: 630,
@@ -55,10 +55,10 @@ export default async function Image() {
                 fontWeight: "bold",
               }}
             >
-              GF
+              NG
             </div>
             <div style={{ fontSize: "28px", fontWeight: "bold", letterSpacing: "-0.5px" }}>
-              GearFlow <span style={{ color: "#60a5fa" }}>Enterprise</span>
+              NextGadgets <span style={{ color: "#60a5fa" }}>Store</span>
             </div>
           </div>
 

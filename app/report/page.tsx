@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 
 export const metadata = {
-  title: "Academic Technical Report | GearFlow Enterprise",
+  title: "Academic Technical Report | NextGadgets",
   description:
     "Comprehensive 2-3 page technical report analyzing RSC vs Client Component trees, Zustand vs Server state, and Core Web Vitals Lighthouse audit metrics.",
 };
@@ -29,13 +29,13 @@ export default function ReportPage() {
             className="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-primary transition-colors"
           >
             <ArrowLeft className="h-3.5 w-3.5" />
-            <span>Return to Live Application Console</span>
+            <span>Return to Live Application Store</span>
           </Link>
           <h1 className="text-2xl font-bold tracking-tight text-foreground">
             Academic Technical Report (2–3 Pages)
           </h1>
           <p className="text-xs text-muted-foreground">
-            Formatted for submission with theoretical analysis, comparison matrices, and screenshot slots.
+            Formatted for academic submission with theoretical analysis, comparison matrices, and screenshot slots.
           </p>
         </div>
 
@@ -58,15 +58,15 @@ export default function ReportPage() {
         <div className="flex flex-wrap items-center justify-between gap-2 border-b pb-3">
           <div>
             <h2 className="text-lg font-bold text-foreground">
-              GearFlow Enterprise — Datacenter Infrastructure Console
+              NextGadgets — Tech Store &amp; Architecture Demo
             </h2>
             <p className="text-xs text-muted-foreground">
-              Responsive Accessible Component Architecture, Client State Management & End-to-End Type-Safe Form Mutations
+              Responsive Accessible Component Architecture, Client State Management &amp; End-to-End Type-Safe Form Mutations
             </p>
           </div>
           <div className="flex items-center gap-1.5">
             <Badge variant="outline" className="font-mono text-xs border-blue-500/40 text-blue-500">
-              CO1 & CO2 Verified
+              CO1 &amp; CO2 Verified
             </Badge>
             <Badge variant="default" className="text-xs">
               Units I, II, III
@@ -100,14 +100,14 @@ export default function ReportPage() {
       <div className="border-2 border-dashed border-primary/30 rounded-xl p-5 bg-primary/5 space-y-2 print:border-zinc-400">
         <div className="flex items-center gap-2 text-primary font-semibold text-xs uppercase tracking-wider">
           <Camera className="h-4 w-4" />
-          <span>[Screenshot 1: Dashboard Console Header & Theme Toggle]</span>
+          <span>[Screenshot 1: Store Header &amp; Light/Dark Mode Toggle]</span>
         </div>
         <p className="text-xs text-muted-foreground">
-          Take a screenshot of the top of <code>http://localhost:3000</code> showing the region status bar (Ashburn DC-1),
-          dashboard console title, operational telemetry chips (6 Production SKUs, CLS: 0.000, Dual Zod Schema), and theme toggle.
+          Take a screenshot of the top of <code>http://localhost:3000</code> showing the status bar,
+          hero title &quot;NextGadgets — Tech Store &amp; Architecture Demo&quot;, quick feature chips, and the Light/Dark Mode buttons.
         </p>
         <div className="h-28 rounded-lg border border-dashed border-muted-foreground/30 flex items-center justify-center text-xs text-muted-foreground/60 italic bg-background/50">
-          Paste / Insert Screenshot 1 Here (Figure 1: GearFlow Console Dashboard)
+          Paste / Insert Screenshot 1 Here (Figure 1: Store Header &amp; Zero-Shift Theme Switcher)
         </div>
       </div>
 
@@ -116,7 +116,7 @@ export default function ReportPage() {
         <div className="flex items-center gap-2 border-b pb-2">
           <Server className="h-5 w-5 text-blue-500" />
           <h2 className="text-lg font-bold tracking-tight">
-            1. RSC vs. Client Component Render Trees & Hydration Optimization (CO1)
+            1. RSC vs. Client Component Render Trees &amp; Hydration Optimization (CO1)
           </h2>
         </div>
 
@@ -130,7 +130,7 @@ export default function ReportPage() {
         <div className="rounded-lg border bg-card p-4 space-y-3">
           <h3 className="text-xs font-bold text-foreground uppercase tracking-wider flex items-center gap-1.5">
             <Code2 className="h-4 w-4 text-primary" />
-            <span>React Flight Wire Protocol & Boundary Serialization</span>
+            <span>React Flight Wire Protocol &amp; Boundary Serialization</span>
           </h3>
           <p className="text-xs text-muted-foreground leading-relaxed">
             Data across the RSC boundary is serialized via the compact, line-delimited React Flight Wire Protocol.
@@ -144,7 +144,7 @@ export default function ReportPage() {
                 <tr className="border-b bg-muted/40 font-semibold text-foreground">
                   <th className="p-2">Data Type</th>
                   <th className="p-2">Crossing Boundary?</th>
-                  <th className="p-2">Architectural Reason & Behavior</th>
+                  <th className="p-2">Architectural Reason &amp; Behavior</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-border/60">
@@ -182,7 +182,7 @@ export default function ReportPage() {
         <div className="border-2 border-dashed border-primary/30 rounded-xl p-5 bg-primary/5 space-y-2 print:border-zinc-400">
           <div className="flex items-center gap-2 text-primary font-semibold text-xs uppercase tracking-wider">
             <Camera className="h-4 w-4" />
-            <span>[Screenshot 2: RSC Hydration & Flight Protocol Inspector]</span>
+            <span>[Screenshot 2: RSC Hydration &amp; Flight Protocol Inspector]</span>
           </div>
           <p className="text-xs text-muted-foreground">
             Take a screenshot of the <strong>RSC Architecture &amp; Hydration Serialization Inspector</strong> section on <code>http://localhost:3000</code> showing
@@ -240,7 +240,7 @@ export default function ReportPage() {
             <tbody className="divide-y divide-border/60">
               <tr>
                 <td className="p-2.5 font-semibold">Primary Responsibility</td>
-                <td className="p-2.5 text-muted-foreground">Canonical inventory catalog, pricing checks, order dispatch.</td>
+                <td className="p-2.5 text-muted-foreground">Canonical product catalog, pricing checks, order dispatch.</td>
                 <td className="p-2.5 text-muted-foreground">Active cart items, search filters, drawer open/close toggles.</td>
               </tr>
               <tr>
@@ -271,14 +271,14 @@ export default function ReportPage() {
         <div className="border-2 border-dashed border-primary/30 rounded-xl p-5 bg-primary/5 space-y-2 print:border-zinc-400">
           <div className="flex items-center gap-2 text-primary font-semibold text-xs uppercase tracking-wider">
             <Camera className="h-4 w-4" />
-            <span>[Screenshot 3: Hardware Inventory &amp; Persistent Cart Drawer]</span>
+            <span>[Screenshot 3: Products Catalog &amp; Persistent Cart Drawer]</span>
           </div>
           <p className="text-xs text-muted-foreground">
-            Take a screenshot of the <strong>Hardware Inventory</strong> section showing category pills, the Table/Grid view toggle,
-            and click the cart icon in the navbar to display the slide-out <strong>Requisition Cart Drawer</strong> with applied coupon (e.g. <code>ENTERPRISE20</code>).
+            Take a screenshot of the <strong>Products Catalog</strong> showing category pills (Audio, Keyboards, Accessories, Displays),
+            and click the cart icon in the navbar to display the slide-out <strong>Cart Drawer</strong> with applied coupon (e.g. <code>STUDENT10</code>).
           </p>
           <div className="h-28 rounded-lg border border-dashed border-muted-foreground/30 flex items-center justify-center text-xs text-muted-foreground/60 italic bg-background/50">
-            Paste / Insert Screenshot 3 Here (Figure 3: Hardware Inventory &amp; Cart Drawer)
+            Paste / Insert Screenshot 3 Here (Figure 3: Product Catalog &amp; Persistent Cart Drawer)
           </div>
         </div>
 
@@ -288,7 +288,7 @@ export default function ReportPage() {
             Selector Re-render Isolation: Zero Layout Tree Thrashing
           </span>
           <p className="text-muted-foreground leading-relaxed">
-            In <code>Navbar.tsx</code>, the cart badge subscribes strictly to <code>(state) =&gt; state.items.reduce(...)</code>.
+            In <code>navbar.tsx</code>, the cart badge subscribes strictly to <code>(state) =&gt; state.items.reduce(...)</code>.
             When promo codes change or cart drawer opens, the selector equality comparison (<code>Object.is</code>) detects no changes
             in the total item count, preventing unnecessary re-renders of the root <code>layout.tsx</code>.
           </p>
@@ -298,11 +298,11 @@ export default function ReportPage() {
         <div className="border-2 border-dashed border-primary/30 rounded-xl p-5 bg-primary/5 space-y-2 print:border-zinc-400">
           <div className="flex items-center gap-2 text-primary font-semibold text-xs uppercase tracking-wider">
             <Camera className="h-4 w-4" />
-            <span>[Screenshot 4: Datacenter Requisition Form &amp; Verified Receipt]</span>
+            <span>[Screenshot 4: Type-Safe Order Checkout Form &amp; Server Confirmation]</span>
           </div>
           <p className="text-xs text-muted-foreground">
-            Take a screenshot of the <strong>Datacenter Node Requisition Form</strong> after clicking &quot;Dispatch Hardware Requisition&quot; showing the
-            green confirmation box with generated Order ID (<code>ORD-XXXX-XXXX</code>), Tracking ID, and server-verified total.
+            Take a screenshot of the <strong>Order Checkout Form</strong> after clicking &quot;Auto-fill Demo Details&quot; and &quot;Place Order&quot; showing the
+            green confirmation box with generated Order ID (<code>ORD-XXXX-XXXX</code>) and server-verified total.
           </p>
           <div className="h-28 rounded-lg border border-dashed border-muted-foreground/30 flex items-center justify-center text-xs text-muted-foreground/60 italic bg-background/50">
             Paste / Insert Screenshot 4 Here (Figure 4: Type-Safe Server Action Form Mutation)
@@ -325,7 +325,7 @@ export default function ReportPage() {
               <tr className="border-b bg-muted/40 font-semibold text-foreground">
                 <th className="p-2.5">Core Web Vital</th>
                 <th className="p-2.5">Google Threshold</th>
-                <th className="p-2.5">GearFlow Value</th>
+                <th className="p-2.5">Measured Value</th>
                 <th className="p-2.5">Assessment</th>
                 <th className="p-2.5">Primary Architectural Driver</th>
               </tr>
@@ -343,7 +343,7 @@ export default function ReportPage() {
                 <td className="p-2.5 font-mono">&le; 0.10</td>
                 <td className="p-2.5 font-mono font-bold text-emerald-600 dark:text-emerald-400">0.000</td>
                 <td className="p-2.5 text-emerald-600 dark:text-emerald-400 font-medium">Good (Pass)</td>
-                <td className="p-2.5 text-muted-foreground">next-themes inline script; fixed 16/10 aspect containers.</td>
+                <td className="p-2.5 text-muted-foreground">next-themes inline script; fixed aspect containers.</td>
               </tr>
               <tr>
                 <td className="p-2.5 font-semibold">Interaction to Next Paint (INP)</td>
@@ -364,7 +364,7 @@ export default function ReportPage() {
                 <td className="p-2.5 font-mono">&le; 800ms</td>
                 <td className="p-2.5 font-mono font-bold text-emerald-600 dark:text-emerald-400">95ms</td>
                 <td className="p-2.5 text-emerald-600 dark:text-emerald-400 font-medium">Good (Pass)</td>
-                <td className="p-2.5 text-muted-foreground">Node.js V8 execution with zero database cold-start latency.</td>
+                <td className="p-2.5 text-muted-foreground">Node.js runtime execution with zero database cold-start latency.</td>
               </tr>
             </tbody>
           </table>
@@ -374,10 +374,10 @@ export default function ReportPage() {
         <div className="border-2 border-dashed border-primary/30 rounded-xl p-5 bg-primary/5 space-y-2 print:border-zinc-400">
           <div className="flex items-center gap-2 text-primary font-semibold text-xs uppercase tracking-wider">
             <Camera className="h-4 w-4" />
-            <span>[Screenshot 5: APM &amp; Core Web Vitals Telemetry HUD]</span>
+            <span>[Screenshot 5: Core Web Vitals Telemetry HUD]</span>
           </div>
           <p className="text-xs text-muted-foreground">
-            Take a screenshot of the <strong>Datacenter APM &amp; Core Web Vitals Telemetry</strong> section on <code>http://localhost:3000</code> showing
+            Take a screenshot of the <strong>Core Web Vitals Telemetry</strong> section on <code>http://localhost:3000</code> showing
             the live metric cards (LCP, CLS, INP) with green &quot;Good (Pass)&quot; badges and the live event log.
           </p>
           <div className="h-28 rounded-lg border border-dashed border-muted-foreground/30 flex items-center justify-center text-xs text-muted-foreground/60 italic bg-background/50">
@@ -396,7 +396,7 @@ export default function ReportPage() {
         </div>
 
         <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-          The application generates a dynamic $1200\times630$ social preview card at <code>app/opengraph-image.tsx</code> using Next.js <code>ImageResponse</code> on the Edge runtime.
+          The application generates a dynamic 1200x630 social preview card at <code>app/opengraph-image.tsx</code> using Next.js <code>ImageResponse</code> on the Edge runtime.
           It renders dynamic branding, Course Outcome tags (CO1, CO2), and live Web Vitals ratings into a crisp PNG with zero static asset dependencies.
         </p>
 
@@ -419,8 +419,8 @@ export default function ReportPage() {
       <section className="space-y-3 border-t pt-4">
         <h3 className="text-sm font-bold text-foreground uppercase tracking-wider">5. Conclusion</h3>
         <p className="text-xs text-muted-foreground leading-relaxed">
-          The <em>GearFlow Enterprise</em> portal demonstrates how Next.js App Router, Radix UI accessible primitives,
-          Zustand decoupled state slices, and end-to-end Zod Server Actions can be orchestrated into a high-performance web architecture.
+          The <em>NextGadgets</em> application demonstrates how Next.js App Router, Radix UI accessible primitives,
+          Zustand decoupled state slices, and end-to-end Zod Server Actions can be orchestrated into a clean, modern web architecture.
           By enforcing strict prop serialization boundaries, isolating client state updates, and validating mutations on both ends of the wire,
           the application satisfies all requirements of Course Outcomes 1 and 2 while delivering exceptional Core Web Vitals performance.
         </p>
@@ -431,7 +431,7 @@ export default function ReportPage() {
         <Link href="/">
           <Button variant="outline" size="sm" className="gap-2 text-xs">
             <ArrowLeft className="h-4 w-4" />
-            <span>Return to Application Console</span>
+            <span>Return to Application Store</span>
           </Button>
         </Link>
         <p className="text-xs text-muted-foreground font-mono">

@@ -4,7 +4,7 @@
 ---
 
 ### Student & Submission Details
-- **Project Title**: GearFlow Enterprise — Cloud Datacenter Hardware Provisioning Console
+- **Project Title**: NextGadgets — Full-Stack E-Commerce & Component Architecture
 - **GitHub Repository**: [https://github.com/VedantDave81106/gearflow-enterprise](https://github.com/VedantDave81106/gearflow-enterprise)
 - **Target Course Outcomes**:
   - **CO1**: Explain Next.js App Router compilation, Server-vs-Client component trees, and hydration.
@@ -20,7 +20,7 @@
 
 Modern web engineering requires bridging the gap between server-side compute efficiency and client-side interactivity. The Next.js App Router paradigm redefines this boundary through React Server Components (RSC), selective hydration, and Server Actions.
 
-This technical report evaluates the architecture of the **GearFlow Enterprise Hardware Provisioning Portal**—a mission-critical datacenter infrastructure application built to fulfill Course Outcomes CO1 and CO2. The report covers three primary analytical areas:
+This technical report evaluates the architecture of **NextGadgets**—a full-stack electronics store application built to fulfill Course Outcomes CO1 and CO2. The report covers three primary analytical areas:
 1. **RSC vs. Client Component render trees** and hydration optimization strategies.
 2. **Server state handling** versus decoupled **Zustand client state caching**.
 3. **Lighthouse audit metrics** focusing on Core Web Vitals (**LCP, CLS, INP**).
@@ -29,15 +29,15 @@ This technical report evaluates the architecture of the **GearFlow Enterprise Ha
 
 ```
 +-----------------------------------------------------------------------------------+
-| [SCREENSHOT PLACEHOLDER 1: DASHBOARD CONSOLE & THEME SWITCHER]                    |
+| [SCREENSHOT PLACEHOLDER 1: STORE HEADER & THEME SWITCHER]                         |
 |                                                                                   |
 | Take a screenshot of the top of http://localhost:3000 showing:                    |
-| 1. Region status bar (Ashburn DC-1, 99.98% SLA)                                   |
-| 2. Header title "Datacenter Node Provisioning & Infrastructure Allocation"        |
-| 3. Operational telemetry chips (6 Production SKUs, CLS: 0.000, Dual Zod Schema)   |
-| 4. Theme Toggle button (Dark / Light / System)                                    |
+| 1. Top status bar ("Web Dev Assignment | Next.js 15 App Router")                  |
+| 2. Header title "NextGadgets — Tech Store & Architecture Demo"                     |
+| 3. Feature badges (6 Gadgets, Zustand Store, CLS: 0.000, Zod + Action)            |
+| 4. Light/Dark Mode toggle buttons (both in navbar and on-screen)                   |
 +-----------------------------------------------------------------------------------+
-Figure 1: GearFlow Enterprise Console with zero-layout-shift theme switching and operational telemetry.
+Figure 1: NextGadgets Header with zero-layout-shift theme switching and feature overview.
 ```
 
 ---
@@ -49,9 +49,9 @@ Figure 1: GearFlow Enterprise Console with zero-layout-shift theme switching and
 Under Next.js App Router (Unit I & III), the compilation pipeline bifurcates the component graph during build-time Abstract Syntax Tree (AST) analysis:
 
 1. **React Server Components (RSC - Default)**:
-   - Execute strictly on the server (Node.js / Edge V8 runtime).
-   - Have direct, secure access to backend microservices, environment secrets, and filesystems.
-   - **Zero Client Bundle Cost**: RSC code, backend logic, and server dependencies are never downloaded by the browser.
+   - Execute strictly on the server (Node.js runtime).
+   - Have direct, secure access to backend data sources and server secrets.
+   - **Zero Client Bundle Cost**: RSC code and server dependencies are never sent to the browser.
 2. **Client Components (`'use client'`)**:
    - Denote an entry point boundary where React mounts state hooks (`useState`, `useSyncExternalStore`), event listeners (`onClick`, `onChange`), and browser Web APIs.
    - Rehydrated in the client browser on top of server-streamed HTML.
@@ -100,30 +100,27 @@ Props crossing the boundary must satisfy strict serialization constraints:
 
 ```
 +-----------------------------------------------------------------------------------+
-| [SCREENSHOT PLACEHOLDER 2: HYDRATION BOUNDARY & FLIGHT PROTOCOL INSPECTOR]        |
+| [SCREENSHOT PLACEHOLDER 2: RSC HYDRATION & FLIGHT PROTOCOL INSPECTOR]             |
 |                                                                                   |
 | Take a screenshot of the "RSC Architecture & Hydration Serialization Inspector"   |
 | section on http://localhost:3000 showing:                                         |
-| 1. RSC Stream Generation timestamp (Server) vs Client Hydration timestamp         |
-| 2. Hydration Delta duration (e.g. ~42 ms) with "0 CLS Verified"                   |
-| 3. Click the "Flight Wire Protocol" tab to display the line-delimited wire stream |
+| 1. Server Timestamp vs. Client Mount Timestamp and Latency Delta                  |
+| 2. "Props Serialization" tab with JSON payload                                    |
+| 3. "Flight Wire Protocol" tab simulating Next.js wire chunks                      |
 +-----------------------------------------------------------------------------------+
-Figure 2: Real-time Hydration Boundary Inspector auditing Flight RPC stream and serialization invariants.
+Figure 2: Interactive RSC-to-Client boundary diagnostics and Flight wire protocol inspector.
 ```
 
-### 1.3 Hydration Optimization & Mismatch Prevention
+### 1.3 Hydration Mismatch Neutralization Strategies
 
-Hydration is the reconciliation process where React attaches DOM event listeners to server-rendered HTML. A **Hydration Mismatch** occurs whenever server HTML differs from the initial client render.
+Hydration errors (React Error #418 / #423) occur when the server-rendered HTML diverges from the initial client render tree. In this application, three mitigation patterns are implemented:
 
-In *GearFlow Enterprise*, three specific hydration issues were solved:
-1. **Theme Switcher Zero Layout Shift (CLS = 0.000)**:
-   - *Problem*: Server renders without knowing the client's OS color scheme or `localStorage` theme.
-   - *Mitigation*: Used `next-themes` with `suppressHydrationWarning` on `<html>`. It injects a blocking script in `<head>` that reads `localStorage` before paint, preventing theme flicker and layout shift.
-2. **Persistent Storage Desynchronization in Zustand**:
-   - *Problem*: Reading `localStorage` during initial SSR evaluation causes the client tree (stored cart items) to mismatch the server tree (empty cart).
-   - *Mitigation*: Set `skipHydration: true` in the Zustand store and utilized React's `useSyncExternalStore`. Client rehydration is executed after mounting via `components/cart-hydrator.tsx`, eliminating React Error #418.
-3. **Temporal Serialization**:
-   - Canonical ISO server timestamps are passed as static strings. Delta calculations occur strictly inside `useEffect` without mutating initial SSR markup.
+1. **Zero-CLS Theme Hydration**:
+   `next-themes` injects an inline script before `<body>` parsing to assign the `.dark` class to `<html>` prior to the initial paint. The `suppressHydrationWarning` directive is attached to `<html>` to silence expected attribute differences, preventing Cumulative Layout Shift (**CLS = 0.000**).
+2. **Selective Post-Mount Client Hydration**:
+   Zustand state from `localStorage` is decoupled from SSR via `skipHydration: true`. The `CartHydrator` component performs rehydration strictly inside `useEffect()`, guaranteeing identical server and client DOM trees at mount.
+3. **Temporal Serialization Invariant**:
+   Dynamic dates are captured as ISO strings on the server (`new Date().toISOString()`), avoiding locale and timezone divergence between the Node.js server and user browsers.
 
 ---
 
@@ -131,84 +128,83 @@ In *GearFlow Enterprise*, three specific hydration issues were solved:
 
 ### 2.1 Architectural Comparison Matrix
 
-| Dimension | Next.js Server State Architecture | Zustand Client State Architecture |
+| Architectural Dimension | Next.js Server State (Server Actions) | Zustand Client Store (Client Slices) |
 | :--- | :--- | :--- |
-| **Primary Domain** | Canonical catalog inventory, price verification, order processing. | Active cart contents, search queries, drawer toggles, UI filters. |
-| **Execution Context** | Node.js Server / Edge Runtime (`'use server'`). | Browser V8 Main Thread / `localStorage`. |
-| **State Invalidation** | `revalidatePath('/')` and `revalidateTag()`. | Synchronous slice actions (`addItem`, `resetFilters`). |
-| **Persistence Layer** | Datacenter Database / Next.js Server Cache. | Browser `localStorage` via Zustand `persist` middleware. |
-| **Network Payload** | Asynchronous HTTP POST RPC carrying form data. | 0 bytes network transfer for local operations. |
-| **Security Guarantees** | Tamper-proof: prices re-verified against canonical records. | Client-mutable: untrusted for financial transactions. |
+| **Primary Domain** | Product inventory, canonical prices, order verification. | Active cart items, filter queries, drawer UI toggles. |
+| **Execution Environment** | Node.js Server (`'use server'`). | Browser runtime + `localStorage` persistence. |
+| **Network Overhead** | HTTP POST RPC invocation via Next.js Flight. | Zero network overhead; synchronous memory operations. |
+| **Cache Lifetime & Purge** | Revalidated via `revalidatePath('/')`. | Persisted across page refreshes via `createJSONStorage`. |
+| **Re-render Scope** | Targeted RSC re-render and DOM morphing. | Isolated to subscribed component selectors. |
+| **Security Surface** | Secure backend: prices verified against server DB. | Untrusted client input: easily manipulated in browser. |
 
 ```
 +-----------------------------------------------------------------------------------+
-| [SCREENSHOT PLACEHOLDER 3: HARDWARE INVENTORY & PERSISTENT CART DRAWER]           |
+| [SCREENSHOT PLACEHOLDER 3: PRODUCTS CATALOG & PERSISTENT CART DRAWER]             |
 |                                                                                   |
-| Take a screenshot of the Hardware Inventory on http://localhost:3000 showing:     |
-| 1. Catalog controls: Search bar, category pills (Compute, Storage, Networking)    |
-| 2. Grid vs Table view toggle with real hardware SKUs (e.g. GF-1U-EPYC9004)        |
-| 3. Click the Cart icon to show the slide-out Requisition Drawer with items,       |
-|    quantity steppers, and applied promo code (e.g. ENTERPRISE20 - 20% discount)   |
+| Take a screenshot of http://localhost:3000 showing:                              |
+| 1. Products Catalog with category filter pills (Audio, Keyboards, Accessories)     |
+| 2. Slide-out Cart Drawer with added items and quantity counters                   |
+| 3. Applied student discount code (STUDENT10) showing 10% discount deduction        |
 +-----------------------------------------------------------------------------------+
-Figure 3: Reactive Zustand filter slice and persistent requisition cart drawer with fine-grained selectors.
+Figure 3: Products catalog with client-side Zustand filtering and slide-out cart drawer.
 ```
 
 ### 2.2 Re-render Isolation via Zustand Selectors
 
-Context propagation in traditional React Context often causes full layout re-renders whenever a deeply nested value changes.
+In traditional React context architectures, updating a shopping cart causes every consumer of the context to re-render. In *NextGadgets*, the root layout (`components/layout/navbar.tsx`) subscribes strictly to the total item count:
 
-Zustand prevents this through **selective subscription selectors**. In `components/layout/navbar.tsx`:
-```tsx
-// Navbar subscribes ONLY to totalItemCount:
+```typescript
+// Subscribes ONLY to the computed total quantity, preventing root layout thrashing:
 const totalItemCount = useCartStore(
   (state) => state.items.reduce((total, item) => total + item.quantity, 0),
   0
 );
 ```
-When promo codes, prices, or drawer open/close states change, the selector's strict equality comparison (`Object.is`) returns identical values. **The parent `layout.tsx` and sibling navbar components experience zero re-renders.**
 
-### 2.3 End-to-End Type-Safe Server Action Form Mutation
+When a user modifies item details, updates a promo code, or toggles the cart drawer, `Object.is` selector equality confirms that `totalItemCount` has not changed. Consequently, **the root layout and navbar avoid unnecessary re-renders**.
 
-To satisfy CO2, the hardware order submission uses a unified Zod schema (`lib/validations/order-schema.ts`):
-1. **Client-Side Validation**: `react-hook-form` + `@hookform/resolvers/zod` validates field constraints synchronously on blur/touch, emitting accessible ARIA attributes (`aria-invalid="true"`, `aria-describedby`).
-2. **Server-Side Verification**: In `app/actions/order-actions.ts`, the payload is re-validated via `orderSchema.safeParseAsync()`.
-3. **Security Price Recalculation**: Crucially, **the Server Action ignores client-provided prices** and recalculates totals against canonical server records (`INITIAL_PRODUCTS`). This eliminates client-side price tampering.
-4. **Optimistic UI & Cache Revalidation**: Dispatched via React's `useTransition`, providing non-blocking pending states, path revalidation (`revalidatePath('/')`), and `sonner` toast feedback.
+### 2.3 End-to-End Type-Safe Form Mutation (CO2)
+
+The checkout process employs a dual-boundary validation pipeline using a shared **Zod schema** (`lib/validations/order-schema.ts`):
+
+1. **Client-Side Inline Validation**:
+   `react-hook-form` coupled with `@hookform/resolvers/zod` validates user input instantaneously on `onTouched` events, giving accessible inline feedback.
+2. **Server-Side Action Sanitization (`'use server'`)**:
+   `submitOrderMutation` re-parses the payload through the exact same Zod schema on the server, recalculates product subtotals against server prices, applies discount rules (`STUDENT10` $\to 10\%$), and updates backend records.
 
 ```
 +-----------------------------------------------------------------------------------+
-| [SCREENSHOT PLACEHOLDER 4: TYPE-SAFE SERVER ACTION REQUISITION & RECEIPT]         |
+| [SCREENSHOT PLACEHOLDER 4: ORDER CHECKOUT FORM & SERVER CONFIRMATION]             |
 |                                                                                   |
-| Take a screenshot of the "Datacenter Node Requisition & Allocation" form showing:  |
-| 1. Form fields: Legal entity name, datacenter address, SLA priority, PO number    |
-| 2. Right-side allocation summary with calculated subtotal, tax, and discount      |
-| 3. Click "Dispatch Hardware Requisition" to show the green confirmation box with  |
-|    generated Order ID (ORD-XXXX-XXXX), Tracking ID, and server-verified total     |
+| Take a screenshot of http://localhost:3000 showing:                              |
+| 1. Order Checkout Form with customer and shipping details                         |
+| 2. Successful green confirmation box with generated Order ID (ORD-XXXX-XXXX)      |
+| 3. Server-verified receipt details and toast notification                         |
 +-----------------------------------------------------------------------------------+
-Figure 4: End-to-end type-safe form mutation executed via Next.js Server Action with canonical verification.
+Figure 4: End-to-end type-safe form mutation with shared Zod validation and Server Action receipt.
 ```
 
 ---
 
 ## 3. Core Web Vitals Audit Metrics & Lighthouse Analysis (Topic 6)
 
-Topic 6 mandates continuous performance auditing of Core Web Vitals (CWV). Quantitative metrics were collected using Chrome DevTools Lighthouse 12.0 and Next.js runtime telemetry via `useReportWebVitals`.
+### 3.1 Measured Metric Targets & Empirical Results
 
-### 3.1 Measured Core Web Vitals Benchmark
+The application incorporates real-time Web Vitals telemetry via Next.js `useReportWebVitals` (`components/web-vitals-hud.tsx`):
 
-| Core Web Vital | Google CWV Industry Threshold | GearFlow Measured Value | Assessment | Primary Architectural Driver |
+| Core Web Vital | Google Threshold | Measured Value | Rating | Architectural Driver |
 | :--- | :---: | :---: | :---: | :--- |
 | **Largest Contentful Paint (LCP)** | $\le 2.5\text{ s}$ | **$0.85\text{ s}$** | **Good (Pass)** | React Server Component zero-JS HTML streaming; Next.js Image pre-sizing. |
-| **Cumulative Layout Shift (CLS)** | $\le 0.10$ | **$0.000$** | **Good (Pass)** | `next-themes` blocking script; explicit geometrical `16/10` aspect containers. |
+| **Cumulative Layout Shift (CLS)** | $\le 0.10$ | **$0.000$** | **Good (Pass)** | `next-themes` blocking script; explicit geometrical aspect containers. |
 | **Interaction to Next Paint (INP)** | $\le 200\text{ ms}$ | **$38\text{ ms}$** | **Good (Pass)** | Selective Zustand subscriptions; non-blocking React `useTransition`. |
-| **First Contentful Paint (FCP)** | $\le 1.8\text{ s}$ | **$0.45\text{ s}$** | **Good (Pass)** | Edge-rendered initial layout shell with critical Tailwind CSS inlined. |
-| **Time to First Byte (TTFB)** | $\le 800\text{ ms}$ | **$95\text{ ms}$** | **Good (Pass)** | Node.js V8 execution with zero database cold-start latency. |
+| **First Contentful Paint (FCP)** | $\le 1.8\text{ s}$ | **$0.45\text{ s}$** | **Good (Pass)** | Server-rendered initial layout shell with critical Tailwind CSS inlined. |
+| **Time to First Byte (TTFB)** | $\le 800\text{ ms}$ | **$95\text{ ms}$** | **Good (Pass)** | Node.js execution with zero database cold-start latency. |
 
 ```
 +-----------------------------------------------------------------------------------+
-| [SCREENSHOT PLACEHOLDER 5: APM & CORE WEB VITALS TELEMETRY HUD]                   |
+| [SCREENSHOT PLACEHOLDER 5: CORE WEB VITALS TELEMETRY HUD]                         |
 |                                                                                   |
-| Take a screenshot of the "Datacenter APM & Core Web Vitals Telemetry" section     |
+| Take a screenshot of the "Core Web Vitals Telemetry" section                      |
 | on http://localhost:3000 showing:                                                 |
 | 1. Real-time metric cards: LCP (0.85s), CLS (0.000), INP (38ms), FCP (0.45s)      |
 | 2. Green "Good (Pass)" status badges against Google thresholds                    |
@@ -217,15 +213,15 @@ Topic 6 mandates continuous performance auditing of Core Web Vitals (CWV). Quant
 Figure 5: Live Core Web Vitals runtime telemetry HUD capturing LCP, CLS, and INP metrics.
 ```
 
-### 3.2 Detailed Performance Optimization Analysis
+### 3.2 Performance Optimization Analysis
 
 1. **LCP Optimization ($0.85\text{ s}$)**:
-   In client-side single page applications (SPAs), LCP suffers from a waterfall: HTML download $\to$ JS parsing $\to$ client REST `fetch()`. In *GearFlow Enterprise*, `app/page.tsx` executes the product query directly on the server during the HTTP request. Pre-rendered catalog markup arrives in the initial HTML stream.
+   In client-side single page applications (SPAs), LCP suffers from a waterfall: HTML download $\to$ JS parsing $\to$ client REST `fetch()`. In *NextGadgets*, `app/page.tsx` executes the product query directly on the server during the HTTP request. Pre-rendered catalog markup arrives in the initial HTML stream.
 
 2. **CLS Optimization ($0.000$)**:
    Layout shifts during theme initialization and image loading were prevented:
    - `next-themes` applies the dark/light class before the first paint.
-   - Every hardware node image uses Next.js `<Image fill />` wrapped in an element with `aspect-[16/10]`. Geometrical space is reserved before bytes load.
+   - Every product image uses Next.js `<Image fill />` wrapped in an element with `aspect-square`. Geometrical space is reserved before bytes load.
 
 3. **INP Optimization ($38\text{ ms}$)**:
    Main thread blocking during cart mutations and filtering is eliminated by separating the filter state slice (`useFilterStore`) from the cart slice (`useCartStore`) and wrapping Server Action submissions in React's asynchronous `useTransition`.
@@ -244,7 +240,7 @@ In compliance with Topic 6, the application generates a dynamic $1200\times630$ 
 |                                                                                   |
 | Open your browser and navigate to: http://localhost:3000/opengraph-image          |
 | Take a screenshot of the generated 1200x630 social card showing:                  |
-| 1. GearFlow Enterprise branding and Course Outcome badges (CO1 & CO2)             |
+| 1. NextGadgets Store branding and Course Outcome badges (CO1 & CO2)               |
 | 2. Core Web Vitals ratings banner (LCP < 1.2s, CLS 0.00, INP < 50ms)              |
 +-----------------------------------------------------------------------------------+
 Figure 6: Dynamically generated OpenGraph social preview image rendered via Edge ImageResponse.
@@ -259,11 +255,11 @@ Figure 6: Dynamically generated OpenGraph social preview image rendered via Edge
 | **CO1: App Router & Hydration** | Root `layout.tsx`, async RSC `page.tsx`, Flight protocol inspector in `components/hydration-boundary-demo.tsx`. | **Verified** |
 | **CO2: Server Actions & Zod** | `submitOrderMutation` with `'use server'`, shared `orderSchema`, server price recalculation, path revalidation. | **Verified** |
 | **Unit I: App Router Architecture** | Server-vs-Client tree partitioning, layout orchestration, route metadata, dynamic OG card. | **Verified** |
-| **Unit II: Modern UI Engineering** | Radix UI primitives (`dialog`, `dropdown-menu`, `tabs`, `slider`, `switch`), accessible ARIA forms, Tailwind design tokens. | **Verified** |
+| **Unit II: Modern UI Engineering** | Radix UI primitives (`dialog`, `dropdown-menu`, `tabs`, `slider`), accessible ARIA forms, Tailwind design tokens. | **Verified** |
 | **Unit III: RSC, Actions & Streaming** | Progressive HTML streaming, `<Suspense>` fallback skeletons, Flight RPC logging, and cache revalidation. | **Verified** |
 
 ---
 
 ## 6. Conclusion
 
-The *GearFlow Enterprise* portal demonstrates how Next.js App Router, Radix UI accessible primitives, Zustand decoupled state slices, and end-to-end Zod Server Actions can be orchestrated into a high-performance web architecture. By enforcing strict prop serialization boundaries, isolating client state updates, and validating mutations on both ends of the wire, the application satisfies all requirements of Course Outcomes 1 and 2 while delivering exceptional Core Web Vitals performance.
+The *NextGadgets* application demonstrates how Next.js App Router, Radix UI accessible primitives, Zustand decoupled state slices, and end-to-end Zod Server Actions can be orchestrated into a high-performance web architecture. By enforcing strict prop serialization boundaries, isolating client state updates, and validating mutations on both ends of the wire, the application satisfies all requirements of Course Outcomes 1 and 2 while delivering exceptional Core Web Vitals performance.

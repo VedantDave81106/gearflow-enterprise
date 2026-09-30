@@ -133,7 +133,7 @@ export function WebVitalsHud() {
             <div className="flex items-center gap-2">
               <Gauge className="h-5 w-5 text-primary" />
               <CardTitle className="text-lg font-bold tracking-tight">
-                Datacenter APM & Core Web Vitals Telemetry
+                Core Web Vitals Telemetry (Performance &amp; Hydration)
               </CardTitle>
               <Badge variant="outline" className="border-emerald-500/40 text-emerald-500 font-mono text-[11px]">
                 Live Runtime Telemetry
